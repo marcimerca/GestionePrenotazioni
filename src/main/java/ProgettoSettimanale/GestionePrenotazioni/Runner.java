@@ -9,6 +9,8 @@ import ProgettoSettimanale.GestionePrenotazioni.service.EdificioService;
 import ProgettoSettimanale.GestionePrenotazioni.service.PostazioneService;
 import ProgettoSettimanale.GestionePrenotazioni.service.PrenotazioneService;
 import ProgettoSettimanale.GestionePrenotazioni.service.UtenteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -28,6 +30,8 @@ public class Runner implements CommandLineRunner {
 
     @Autowired
     private PrenotazioneService prenotazioneService;
+
+    static Logger logger = LoggerFactory.getLogger("logger1");
 
 
     @Override
@@ -75,20 +79,55 @@ public class Runner implements CommandLineRunner {
 
         /*System.out.println(postazioneService.getAllPostazioni());*/
 
-        Prenotazione prenotazione1 = new Prenotazione();
-        prenotazione1.setDataPrenotata(LocalDate.now());
-        prenotazione1.setUtente(utente1);
-        prenotazioneService.inserisciPrenotazione(prenotazione1);
+        try {
+            Prenotazione prenotazione1 = new Prenotazione();
+            prenotazione1.setPostazione(postazione1);
+            prenotazione1.setDataPrenotata(LocalDate.now());
+            prenotazione1.setUtente(utente1);
+            prenotazioneService.inserisciPrenotazione(prenotazione1);
 
-        Prenotazione prenotazione2 = new Prenotazione();
-        prenotazione2.setPostazione(postazione1);
-        prenotazione2.setDataPrenotata(LocalDate.of(2024, 05, 10));
-        prenotazione2.setUtente(utente2);
-        prenotazioneService.inserisciPrenotazione(prenotazione2);
+        } catch (PrenotazioneException e) {
+            logger.error(e.getMessage());
+        }
 
-        System.out.println("Prova query");
+        try {
+            Prenotazione prenotazione2 = new Prenotazione();
+            prenotazione2.setPostazione(postazione1);
+            prenotazione2.setDataPrenotata(LocalDate.now());
+            prenotazione2.setUtente(utente2);
+            prenotazioneService.inserisciPrenotazione(prenotazione2);
+        } catch (PrenotazioneException e) {
+            logger.error(e.getMessage());
+        }
+        try {
+            Prenotazione prenotazione3 = new Prenotazione();
+            prenotazione3.setPostazione(postazione2);
+            prenotazione3.setDataPrenotata(LocalDate.now());
+            prenotazione3.setUtente(utente1);
+            prenotazioneService.inserisciPrenotazione(prenotazione3);
+        } catch (PrenotazioneException e) {
+            logger.error(e.getMessage());
+
+        }
+
+        try {
+            Prenotazione prenotazione4 = new Prenotazione();
+            prenotazione4.setPostazione(postazione2);
+            prenotazione4.setDataPrenotata(LocalDate.of(2024,5,20));
+            prenotazione4.setUtente(utente1);
+            prenotazioneService.inserisciPrenotazione(prenotazione4);
+        } catch (PrenotazioneException e) {
+            logger.error(e.getMessage());
+
+        }
+
+
+        /*System.out.println("Prova query");
         prenotazioneService.trovaPrenotazioniByDataEPostazione(LocalDate.of(2024, 05, 10), postazione1).forEach(System.out::println
-        );
+        );*/
+
+        System.out.println("_____Query ricerca postazione per tipo e città di interesse_____");
+        System.out.println(postazioneService.findByTipoECittaDiInteresse(Tipo.OPENSPACE, "Milano"));
 
 
     }

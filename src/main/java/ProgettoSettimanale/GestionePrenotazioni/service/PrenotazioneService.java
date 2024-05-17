@@ -27,7 +27,7 @@ public class PrenotazioneService {
         if (prenotazioniAttualiPostazione.size() >= prenotazione.getPostazione().getNumMaxOccupanti()) {
             throw new PrenotazioneException("La postazione ha già raggiunto il n. max di occupanti");
         } else if (!prenotazioniAttualiUtente.isEmpty()) {
-            throw new PrenotazioneException("L'utente ha già delle prenotazioni attive per questa data");
+            throw new PrenotazioneException("L'utente ha già delle prenotazioni attive per questa data: " + prenotazione.getDataPrenotata());
         } else {
             prenotazioneRepository.save(prenotazione);
         }
