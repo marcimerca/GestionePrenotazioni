@@ -47,6 +47,12 @@ public class Runner implements CommandLineRunner {
         utente2.setNomeCompleto("Dwayne Johnson");
         utente2.setEmail("rock@gmail.com");
 
+        Utente utente3 = new Utente();
+        utente3.setUsername("John");
+        utente3.setNomeCompleto("Cena");
+        utente3.setEmail("cena@gmail.com");
+
+
         Edificio edificio1 = new Edificio();
         edificio1.setCitta("Milano");
         edificio1.setNome("Grattacielo");
@@ -55,7 +61,7 @@ public class Runner implements CommandLineRunner {
         Postazione postazione1 = new Postazione();
 
         postazione1.setTipo(Tipo.OPENSPACE);
-        postazione1.setNumMaxOccupanti(1);
+        postazione1.setNumMaxOccupanti(2);
         postazione1.setDescrizione("Sala open");
         postazione1.setEdificio(edificio1);
 
@@ -74,6 +80,7 @@ public class Runner implements CommandLineRunner {
 
         utenteService.inserisciUtente(utente1);
         utenteService.inserisciUtente(utente2);
+        utenteService.inserisciUtente(utente3);
 
         /*  System.out.println(utenteService.getUtenteById(1));*/
 
@@ -99,6 +106,7 @@ public class Runner implements CommandLineRunner {
         } catch (PrenotazioneException e) {
             logger.error(e.getMessage());
         }
+
         try {
             Prenotazione prenotazione3 = new Prenotazione();
             prenotazione3.setPostazione(postazione2);
@@ -119,6 +127,15 @@ public class Runner implements CommandLineRunner {
         } catch (PrenotazioneException e) {
             logger.error(e.getMessage());
 
+        }
+        try {
+            Prenotazione prenotazione5 = new Prenotazione();
+            prenotazione5.setPostazione(postazione1);
+            prenotazione5.setDataPrenotata(LocalDate.now());
+            prenotazione5.setUtente(utente3);
+            prenotazioneService.inserisciPrenotazione(prenotazione5);
+        } catch (PrenotazioneException e) {
+            logger.error(e.getMessage());
         }
 
 
