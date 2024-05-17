@@ -25,12 +25,12 @@ public class PrenotazioneService {
         List<Prenotazione> prenotazioniAttualiUtente = trovaPrenotazioniByUtenteEData(prenotazione.getDataPrenotata(), prenotazione.getUtente());
 
         if (prenotazioniAttualiPostazione.size() >= prenotazione.getPostazione().getNumMaxOccupanti()) {
-            throw new PrenotazioneException("La postazione ha già raggiunto il n. max di occupanti");
-        } else if (!prenotazioniAttualiUtente.isEmpty()) {
-            throw new PrenotazioneException("L'utente ha già delle prenotazioni attive per questa data: " + prenotazione.getDataPrenotata());
-        } else {
-            prenotazioneRepository.save(prenotazione);
+            throw new PrenotazioneException("La postazione ha già raggiunto il numero massimo di occupanti (" + prenotazione.getPostazione().getNumMaxOccupanti() + ").");
         }
+        if (!prenotazioniAttualiUtente.isEmpty()) {
+            throw new PrenotazioneException("L'utente ha già delle prenotazioni attive per questa data: " + prenotazione.getDataPrenotata());
+        }
+        prenotazioneRepository.save(prenotazione);
 
     }
 
